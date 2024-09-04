@@ -36,6 +36,7 @@ import {
 import {
     createConsentModal,
     createPreferencesModal,
+    createCustomModal,
     generateHtml,
     createMainContainer
 } from './modals/index';
@@ -289,6 +290,45 @@ export const showPreferences = () => {
 };
 
 /**
+ * Show preferences modal
+ */
+export const showCustomData = () => {
+    console.log('showCustomData');
+    const state = globalObj._state;
+
+    if (state._preferencesModalVisible)
+        return;
+
+    if (!state._preferencesModalExists)
+        createCustomModal();
+
+    state._preferencesModalVisible = true;
+
+    // If there is no consent-modal, keep track of the last focused elem.
+    if (!state._consentModalVisible) {
+        state._lastFocusedElemBeforeModal = getActiveElement();
+    } else {
+        state._lastFocusedModalElement = getActiveElement();
+    }
+
+    focusAfterTransition(globalObj._dom._pm, 2);
+
+    addClass(globalObj._dom._htmlDom, TOGGLE_PREFERENCES_MODAL_CLASS);
+    setAttribute(globalObj._dom._pm, ARIA_HIDDEN, 'false');
+
+    /**
+     * Set focus to preferencesModal
+     */
+    setTimeout(() => {
+        focus(globalObj._dom._pmDivTabindex);
+    }, 100);
+
+    debug('CookieConsent [TOGGLE]: show customDataModal');
+
+    fireEvent(globalObj._customEvents._onModalShow, PREFERENCES_MODAL_NAME);
+};
+
+/**
  * https://github.com/orestbida/cookieconsent/issues/481
  */
 const discardUnsavedPreferences = () => {
@@ -364,7 +404,8 @@ var miniAPI = {
     hide,
     showPreferences,
     hidePreferences,
-    acceptCategory
+    acceptCategory,
+    showCustomData
 };
 
 /**

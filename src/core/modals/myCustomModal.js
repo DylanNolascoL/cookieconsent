@@ -40,8 +40,8 @@ import {
  * @param {import("../global").Api} api
  * @param {CreateMainContainer} createMainContainer
  */
-export const createPreferencesModal = (api, createMainContainer) => {
-    console.log('createPreferencesModal');
+export const createCustomModal = (api, createMainContainer) => {
+    console.log('createCustomModal');
     const state = globalObj._state;
     const dom = globalObj._dom;
     const {hide, hidePreferences, acceptCategory} = api;

@@ -52,7 +52,7 @@ const createFocusSpan = () => {
 export const createConsentModal = (api, createMainContainer) => {
     const state = globalObj._state;
     const dom = globalObj._dom;
-    const {hide, showPreferences, acceptCategory} = api;
+    const {hide, showPreferences, acceptCategory, showCustomData } = api;
 
     /**
      * @type {import("../global").ConsentModalOptions}
@@ -68,7 +68,8 @@ export const createConsentModal = (api, createMainContainer) => {
         closeIconLabelData = consentModalData.closeIconLabel,
         footerData = consentModalData.footer,
         consentModalLabelValue = consentModalData.label,
-        consentModalTitleValue = consentModalData.title;
+        consentModalTitleValue = consentModalData.title,
+        manageWithBTSBtn = consentModalData.manageWithBTS;
 
     /**
      * @param {string|string[]} [categories]
@@ -222,7 +223,27 @@ export const createConsentModal = (api, createMainContainer) => {
         dom._cmShowPreferencesBtn.firstElementChild.innerHTML = showPreferencesBtnData;
     }
 
+
+    if (manageWithBTSBtn) {
+        if (!dom._cmManageWithBTS) {
+            dom._cmManageWithBTS = createNode(BUTTON_TAG);
+            appendChild(dom._cmManageWithBTS, createFocusSpan());
+            addClassCm(dom._cmManageWithBTS, 'btn');
+            addClassCm(dom._cmManageWithBTS, 'btn--secondary');
+            setAttribute(dom._cmManageWithBTS, DATA_ROLE, 'show');
+
+            addEvent(dom._cmManageWithBTS, 'mouseenter', () => {
+                if (!state._preferencesModalExists)
+                    createPreferencesModal(api, createMainContainer);
+            });
+            addEvent(dom._cmManageWithBTS, CLICK_EVENT, showCustomData);
+        }
+
+        dom._cmManageWithBTS.firstElementChild.innerHTML = manageWithBTSBtn;
+    }
+
     if (!dom._cmBtnGroup) {
+        console.log(dom._cmBtnGroup);
         dom._cmBtnGroup = createNode(DIV_TAG);
         addClassCm(dom._cmBtnGroup, BTN_GROUP_CLASS);
 
@@ -233,19 +254,25 @@ export const createConsentModal = (api, createMainContainer) => {
         appendChild(dom._cmBtns, dom._cmBtnGroup);
     }
 
-    if (dom._cmShowPreferencesBtn && !dom._cmBtnGroup2) {
-        dom._cmBtnGroup2 = createNode(DIV_TAG);
 
-        if ((!dom._cmAcceptNecessaryBtn || !dom._cmAcceptAllBtn)) {
-            appendChild(dom._cmBtnGroup, dom._cmShowPreferencesBtn);
-            addClassCm(dom._cmBtnGroup, BTN_GROUP_CLASS + '--uneven');
-        }else {
-            addClassCm(dom._cmBtnGroup2, BTN_GROUP_CLASS);
-            appendChild(dom._cmBtnGroup2, dom._cmShowPreferencesBtn);
-            appendChild(dom._cmBtns, dom._cmBtnGroup2);
+    const handleButtonGroup = (button, groupClass) => {
+        if (button) {
+            dom._cmBtnGroup2 = createNode(DIV_TAG);
+    
+            if ((!dom._cmAcceptNecessaryBtn || !dom._cmAcceptAllBtn)) {
+                appendChild(dom._cmBtnGroup, button);
+                addClassCm(dom._cmBtnGroup, groupClass + '--uneven');
+            } else {
+                addClassCm(dom._cmBtnGroup2, groupClass);
+                appendChild(dom._cmBtnGroup2, button);
+                appendChild(dom._cmBtns, dom._cmBtnGroup2);
+            }
         }
-    }
-
+    };
+    
+    handleButtonGroup(dom._cmShowPreferencesBtn, BTN_GROUP_CLASS);
+    handleButtonGroup(dom._cmManageWithBTS, BTN_GROUP_CLASS);
+    
     if (footerData) {
         if (!dom._cmFooterLinksGroup) {
             let _consentModalFooter = createNode(DIV_TAG);

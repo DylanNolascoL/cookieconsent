@@ -297,7 +297,7 @@ declare namespace CookieConsent {
         acceptAllBtn?: string
         acceptNecessaryBtn?: string
         showPreferencesBtn?: string
-
+        manageWithBTS?: string
         /**
          * Specify to generate a big "X" (accept necessary) button. Visible in the `box` layout only.
          */
@@ -559,6 +559,11 @@ declare namespace CookieConsent {
      * Show the preferencesModal.
      */
     function showPreferences(): void
+
+    /**
+     * Show my custom modal data.
+     */
+    function showCustomData(): void
 
     /**
      * Hide the preferencesModal.

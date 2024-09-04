@@ -40,6 +40,7 @@ import { COOKIE_NAME, OPT_IN_MODE } from '../utils/constants';
  * @property {HTMLElement} _ccMain
  * @property {HTMLElement} _cmContainer
  * @property {HTMLElement} _pmContainer
+ * @property {HTMLElement} _cusContainer
  *
  * @property {HTMLElement} _cm
  * @property {HTMLElement} _cmBody
@@ -52,6 +53,7 @@ import { COOKIE_NAME, OPT_IN_MODE } from '../utils/constants';
  * @property {HTMLElement} _cmAcceptAllBtn
  * @property {HTMLElement} _cmAcceptNecessaryBtn
  * @property {HTMLElement} _cmShowPreferencesBtn
+ * @property {HTMLElement} _cmManageWithBTS
  * @property {HTMLElement} _cmFooterLinksGroup
  * @property {HTMLElement} _cmCloseIconBtn
  *
